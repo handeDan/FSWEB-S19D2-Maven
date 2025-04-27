@@ -20,27 +20,27 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> findAll() {
         return customerRepository.findAll();
     }
 
     @Override
-    public Customer getCustomerById(Long id) {
-        return customerRepository.findById(id)
+    public Customer find(int id) {
+        return customerRepository.findById(Long.parseLong(id+""))
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
     }
 
     @Override
-    public Customer createCustomer(Customer customer) {
+    public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }
 
     @Override
-    public Customer updateCustomer(Long id, Customer updatedCustomer) {
-        Customer existingCustomer = customerRepository.findById(id)
+    public Customer update(int id, Customer updatedCustomer) {
+        Customer existingCustomer = customerRepository.findById(Long.parseLong(id+""))
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
 
-        existingCustomer.setName(updatedCustomer.getName());
+        existingCustomer.setFirstName(updatedCustomer.getFirstName());
         existingCustomer.setEmail(updatedCustomer.getEmail());
         existingCustomer.setPhoneNumber(updatedCustomer.getPhoneNumber());
 
@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(Long id) {
-        customerRepository.deleteById(id);
+    public void delete(int id) {
+        customerRepository.deleteById(Long.parseLong(id+""));
     }
 }

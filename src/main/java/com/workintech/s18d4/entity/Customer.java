@@ -20,6 +20,7 @@ public class Customer {
     private String lastName;
     private String email;
     private Double salary;
+    private String phoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")

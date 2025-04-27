@@ -23,18 +23,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAllAccounts() {
+    public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
     @Override
-    public Account getAccountById(Long id) {
+    public Account find(Long id) {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
     }
 
     @Override
-    public Account createAccount(Long customerId, Account account) {
+    public Account save(Long customerId, Account account) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
 
@@ -43,11 +43,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Long customerId, Account updatedAccount) {
+    public Account update(Long customerId, Account updatedAccount) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
 
-        Account existingAccount = accountRepository.findById(updatedAccount.getId())
+        Account existingAccount = accountRepository.findById(Long.parseLong(updatedAccount.getId()+""))
                 .orElseThrow(() -> new RuntimeException("Account not found with id: " + updatedAccount.getId()));
 
         existingAccount.setAccountNumber(updatedAccount.getAccountNumber());
@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(Long id) {
+    public void delete(int id) {
         accountRepository.deleteById(id);
     }
 }

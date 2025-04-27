@@ -3,6 +3,7 @@ package com.workintech.s18d4.controller;
 import com.workintech.s18d4.dto.AccountResponse;
 import com.workintech.s18d4.dto.CustomerResponse;
 import com.workintech.s18d4.entity.Customer;
+import com.workintech.s18d4.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerService;
 
     @GetMapping
     public List<Customer> getAllCustomers() {
@@ -26,7 +27,7 @@ public class CustomerController {
         List<AccountResponse> accountResponses = customer.getAccounts().stream()
                 .map(account -> new AccountResponse(account.getId(), account.getAccountNumber(), account.getAccountType(), account.getBalance(), customer.getId()))
                 .toList();
-        return new CustomerResponse(customer.getId(), customer.getName(), customer.getEmail(), customer.getPhoneNumber(), accountResponses);
+        return new CustomerResponse(customer.getId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getPhoneNumber(), accountResponses);
     }
 
     @PostMapping

@@ -25,7 +25,7 @@ public class AccountController {
     @GetMapping("/{id}")
     public AccountResponse getAccountById(@PathVariable Long id) {
         Account account = accountService.getAccountById(id);
-        return new AccountResponse(account.getId(), account.getAccountName(),account.getMoneyAmount());}
+        return new AccountResponse(account.getId(), account.getAccountName(), account.getAccountType(), account.getBalance(), account.getCustomer().getId());}
 
     @PostMapping("/{customerId}")
     public AccountResponse createAccount(@PathVariable Long customerId, @RequestBody Account account) {

@@ -1,6 +1,7 @@
 package com.workintech.s18d4.controller;
 
 import com.workintech.s18d4.entity.Address;
+import com.workintech.s18d4.service.AddressServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class AddressController {
 
     @Autowired
-    private AddressService addressService;
+    private AddressServiceImpl addressService;
 
     @GetMapping
     public List<Address> getAllAddresses() {
