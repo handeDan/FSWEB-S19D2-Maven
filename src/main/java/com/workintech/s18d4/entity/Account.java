@@ -16,8 +16,13 @@ public class Account {
 
     private String accountName;
     private Double moneyAmount;
+    private String accountType;
+    private String accountNumber;
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+
 }
