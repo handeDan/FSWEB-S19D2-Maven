@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
 public class CustomerController {
 
   @Autowired private CustomerService customerService;
@@ -22,17 +22,7 @@ public class CustomerController {
   @GetMapping("/{id}")
   public CustomerResponse getCustomerById(@PathVariable Long id) {
     Customer customer = customerService.find(id);
-    List<AccountResponse> accountResponses =
-        customer.getAccounts().stream()
-            .map(
-                account ->
-                    new AccountResponse(
-                        account.getId(),
-                        account.getAccountNumber(),
-                        account.getAccountType(),
-                        account.getBalance(),
-                        customer.getId()))
-            .toList();
+    List<AccountResponse> accountResponses = customer.getAccounts().stream().map(AccountResponse::new).toList();
     return new CustomerResponse(customer.getId(), customer.getEmail(), customer.getSalary());
   }
 

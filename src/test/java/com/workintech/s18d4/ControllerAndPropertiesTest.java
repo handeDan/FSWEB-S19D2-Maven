@@ -104,7 +104,7 @@ class ControllerAndPropertiesTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].id", is(sampleAccountForAccountControllerTest.getId())))
+        .andExpect(jsonPath("$[0].id", is(sampleAccountForAccountControllerTest.getId().intValue())))
         .andExpect(jsonPath("$[0].accountName", is(sampleAccountForAccountControllerTest.getAccountName())));
 
     verify(accountService).findAll();
@@ -120,7 +120,7 @@ class ControllerAndPropertiesTest {
         .perform(get("/account/{id}", sampleAccountForAccountControllerTest.getId()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId())))
+        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId().intValue())))
         .andExpect(jsonPath("$.accountName", is(sampleAccountForAccountControllerTest.getAccountName())));
 
     verify(accountService).find(sampleAccountForAccountControllerTest.getId());
@@ -135,11 +135,11 @@ class ControllerAndPropertiesTest {
 
     mockMvc
         .perform(
-            post("/account/{customerId}", sampleCustomerForAccountControllerTest.getId())
+            post("/account/{customerId}", sampleCustomerForAccountControllerTest.getId().intValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(sampleAccountForAccountControllerTest)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId())))
+        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId().intValue())))
         .andExpect(jsonPath("$.accountName", is(sampleAccountForAccountControllerTest.getAccountName())));
 
     verify(customerService).find(sampleCustomerForAccountControllerTest.getId());
@@ -154,7 +154,6 @@ class ControllerAndPropertiesTest {
     updatedAccount.setId(sampleAccountForAccountControllerTest.getId());
     updatedAccount.setAccountName("Updated Account");
     updatedAccount.setMoneyAmount(2000.00);
-    updatedAccount.setCustomer(sampleCustomerForAccountControllerTest);
 
     // Ensure the customer is associated with the account to be updated
     List<Account> accounts = new ArrayList<>();
@@ -162,8 +161,6 @@ class ControllerAndPropertiesTest {
     sampleCustomerForAccountControllerTest.setAccounts(accounts);
 
     when(customerService.find(customerId)).thenReturn(sampleCustomerForAccountControllerTest);
-    when(accountService.find(sampleAccountForAccountControllerTest.getId()))
-        .thenReturn(sampleAccountForAccountControllerTest);
     when(accountService.save(any())).thenReturn(updatedAccount);
 
     mockMvc
@@ -172,7 +169,7 @@ class ControllerAndPropertiesTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedAccount)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(updatedAccount.getId())))
+        .andExpect(jsonPath("$.id", is(updatedAccount.getId().intValue())))
         .andExpect(jsonPath("$.accountName", is(updatedAccount.getAccountName())))
         .andExpect(jsonPath("$.moneyAmount", is(updatedAccount.getMoneyAmount())));
 
@@ -191,7 +188,7 @@ class ControllerAndPropertiesTest {
     mockMvc
         .perform(delete("/account/{id}", sampleAccountForAccountControllerTest.getId()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId())))
+        .andExpect(jsonPath("$.id", is(sampleAccountForAccountControllerTest.getId().intValue())))
         .andExpect(jsonPath("$.accountName", is(sampleAccountForAccountControllerTest.getAccountName())))
         .andExpect(jsonPath("$.moneyAmount", is(sampleAccountForAccountControllerTest.getMoneyAmount())));
 
@@ -216,7 +213,7 @@ class ControllerAndPropertiesTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(sampleCustomerForCustomerControllerTest)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(expectedResponse.id())))
+        .andExpect(jsonPath("$.id", is(expectedResponse.id().intValue())))
         .andExpect(jsonPath("$.email", is(expectedResponse.email())))
         .andExpect(jsonPath("$.salary", is(expectedResponse.salary())));
 
