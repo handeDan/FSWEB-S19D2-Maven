@@ -24,7 +24,7 @@ public class AccountService {
   }
 
   public Account find(Long id) {
-    return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
+    return accountRepository.findById(id).orElse(null); // Exception yerine null döndür
   }
 
   public Account save(Account account) {
@@ -52,6 +52,9 @@ public class AccountService {
 
   public Account delete(Long id) {
     Account account = this.find(id);
+    if (account == null) {
+      return null;
+    }
     accountRepository.deleteById(id);
     return account;
   }

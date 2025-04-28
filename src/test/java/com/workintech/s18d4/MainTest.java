@@ -317,9 +317,12 @@ class MainTest {
   @DisplayName("AccountService::delete")
   void testDeleteAccount_AccountService() {
     when(mockAccountRepository.findById(1L)).thenReturn(Optional.of(sampleAccountForAccountServiceTest));
-    doNothing().when(mockAccountRepository).delete(sampleAccountForAccountServiceTest);
+    doNothing().when(mockAccountRepository).deleteById(1L);
     accountService.delete(1L);
-    verify(mockAccountRepository, times(1)).delete(sampleAccountForAccountServiceTest);
+
+    // Doğru çağrıları doğrula
+    verify(mockAccountRepository, times(1)).findById(1L);
+    verify(mockAccountRepository, times(1)).deleteById(1L); // Doğru metod!
   }
 
   @Test
@@ -357,10 +360,21 @@ class MainTest {
   @Test
   @DisplayName("CustomerService::delete")
   void testDeleteCustomerService() {
-    when(mockCustomerRepository.findById(1L)).thenReturn(Optional.of(sampleCustomerForCustomerServiceTest));
-    doNothing().when(mockCustomerRepository).delete(sampleCustomerForCustomerServiceTest);
+    // Mock repository çağrısını ayarla
+    when(mockCustomerRepository.findById(anyLong())).thenReturn(Optional.of(sampleCustomerForCustomerServiceTest));
+
+    // Silme işlemini doğru metod ile simüle et
+    doNothing().when(mockCustomerRepository).deleteById(anyLong());
+
+    // Servisi çağır
     Customer deletedCustomer = customerService.delete(1L);
+
+    // Çıktıyı doğrula
     assertEquals(sampleCustomerForCustomerServiceTest, deletedCustomer);
+
+    // Metodun çağrıldığını doğrula
+    verify(mockCustomerRepository, times(1)).findById(1L);
+    verify(mockCustomerRepository, times(1)).deleteById(1L); // Doğru metod
   }
 
   @Test
